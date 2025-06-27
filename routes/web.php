@@ -30,7 +30,8 @@ Route::middleware(['auth', 'role:adopter'])->group(function () {
 // Adopter - Lihat hewan tersedia
 Route::middleware(['auth', 'role:adopter'])->group(function () {
     Route::get('/adopter/hewan', [AdopterController::class, 'hewanIndex'])->name('adopter.hewan.index');
-    
+    Route::get('/adopter/hewan/{id}', [AdopterController::class, 'show'])->name('adopter.hewan.show');
+
 });
 
 

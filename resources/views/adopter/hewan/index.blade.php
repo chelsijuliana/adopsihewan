@@ -15,7 +15,8 @@
                         <h5 class="card-title">{{ $h->nama }} ({{ $h->jenis_kelamin }})</h5>
                         <p class="card-text">{{ $h->jenis }} - {{ $h->ras }}</p>
                         <p class="text-muted">Usia: {{ $h->usia }} tahun</p>
-                        <a href="#" class="btn btn-primary btn-sm disabled">Lihat Detail</a> {{-- Fitur detail next --}}
+                        <a href="{{ route('adopter.hewan.show', $h->id) }}" class="btn btn-primary btn-sm">Lihat Detail</a>
+
                     </div>
                 </div>
             </div>
