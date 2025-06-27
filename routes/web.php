@@ -27,10 +27,28 @@ Route::middleware(['auth', 'role:adopter'])->group(function () {
     Route::get('/adopter/dashboard', [AdopterController::class, 'index'])->name('adopter.dashboard');
 });
 
+// Adopter - Lihat hewan tersedia
+Route::middleware(['auth', 'role:adopter'])->group(function () {
+    Route::get('/adopter/hewan', [AdopterController::class, 'hewanIndex'])->name('adopter.hewan.index');
+    
+});
+
+
 // Pemberi Hibah
 Route::middleware(['auth', 'role:pemberi'])->group(function () {
+    // Dashboard
     Route::get('/pemberi/dashboard', [PemberiController::class, 'index'])->name('pemberi.dashboard');
+
+    // CRUD Hewan
+    Route::get('/pemberi/hewan', [PemberiController::class, 'hewanIndex'])->name('pemberi.hewan.index');
+    Route::get('/pemberi/hewan/tambah', [PemberiController::class, 'create'])->name('pemberi.hewan.create');
+    Route::post('/pemberi/hewan/tambah', [PemberiController::class, 'store'])->name('pemberi.hewan.store');
+    Route::get('/pemberi/hewan/edit/{id}', [PemberiController::class, 'edit'])->name('pemberi.hewan.edit');
+    Route::put('/pemberi/hewan/update/{id}', [PemberiController::class, 'update'])->name('pemberi.hewan.update');
+    Route::delete('/pemberi/hewan/delete/{id}', [PemberiController::class, 'destroy'])->name('pemberi.hewan.destroy');
 });
+
+
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login')->middleware('guest');
 Route::post('/login', [AuthController::class, 'login']);
