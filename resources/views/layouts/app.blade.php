@@ -38,6 +38,8 @@
                         <li class="nav-item"><a href="/admin/dashboard" class="nav-link">Dashboard</a></li>
                         <li class="nav-item"><a href="/admin/users" class="nav-link">Kelola Pengguna</a></li>
                         <li class="nav-item"><a href="/admin/laporan" class="nav-link">Laporan</a></li>
+                    @endif
+
 
                     @elseif ($role === 'dokter')
                         <li class="nav-item"><a href="/dokter/dashboard" class="nav-link">Dashboard</a></li>

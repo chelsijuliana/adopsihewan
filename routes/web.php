@@ -15,7 +15,10 @@ Route::get('/', function () {
 // Admin
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+
+
 });
+
 
 // Dokter
 Route::middleware(['auth', 'role:dokter'])->group(function () {
