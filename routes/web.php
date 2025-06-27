@@ -31,8 +31,11 @@ Route::middleware(['auth', 'role:adopter'])->group(function () {
 Route::middleware(['auth', 'role:adopter'])->group(function () {
     Route::get('/adopter/hewan', [AdopterController::class, 'hewanIndex'])->name('adopter.hewan.index');
     Route::get('/adopter/hewan/{id}', [AdopterController::class, 'show'])->name('adopter.hewan.show');
+    Route::post('/adopter/adopsi/{id}', [AdopterController::class, 'ajukanAdopsi'])->name('adopter.adopsi');
+    Route::get('/adopter/status-adopsi', [AdopterController::class, 'statusAdopsi'])->name('adopter.status');
 
 });
+
 
 
 // Pemberi Hibah

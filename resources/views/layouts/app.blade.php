@@ -30,6 +30,7 @@
                     <li class="nav-item"><a href="/" class="nav-link">Beranda</a></li>
                     <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
                     <li class="nav-item"><a href="/register" class="nav-link">Daftar</a></li>
+                    
                 @endguest
 
                 @auth
@@ -45,7 +46,8 @@
                     @elseif ($role === 'adopter')
                         <li class="nav-item"><a href="/adopter/dashboard" class="nav-link">Dashboard</a></li>
                         <li class="nav-item"><a href="/adopter/hewan" class="nav-link">Lihat Hewan</a></li>
-                        <li class="nav-item"><a href="/adopter/riwayat" class="nav-link">Riwayat Adopsi</a></li>
+                        <li class="nav-item"><a href="{{ route('adopter.status') }}" class="nav-link">📋 Status Adopsi</a></li>
+
 
                     @elseif ($role === 'pemberi')
                         <li class="nav-item"><a href="/pemberi/dashboard" class="nav-link">Dashboard</a></li>

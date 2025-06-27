@@ -20,10 +20,27 @@
                     <p><strong>Deskripsi:</strong><br> {{ $hewan->deskripsi ?? 'Tidak ada deskripsi.' }}</p>
 
                     <hr>
-                    <form action="#" method="POST">
-                        {{-- Tombol ajukan adopsi (aktifkan nanti) --}}
-                        <button class="btn btn-success" disabled>❤️ Ajukan Adopsi</button>
-                        <small class="d-block text-muted mt-1">*Fitur pengajuan adopsi akan aktif selanjutnya.</small>
+
+                    {{-- Pesan sukses/gagal --}}
+                    @if (session('success'))
+                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @endif
+                    @if (session('error'))
+                        <div class="alert alert-danger">{{ session('error') }}</div>
+                    @endif
+
+                    {{-- Form ajukan adopsi --}}
+                    <form action="{{ route('adopter.adopsi', $hewan->id) }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label>📝 Alasan ingin mengadopsi <span class="text-danger">*</span></label>
+                            <textarea name="alasan" class="form-control" rows="3" required>{{ old('alasan') }}</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label>💡 Pengalaman merawat hewan (opsional)</label>
+                            <textarea name="pengalaman" class="form-control" rows="3">{{ old('pengalaman') }}</textarea>
+                        </div>
+                        <button class="btn btn-success">❤️ Ajukan Adopsi</button>
                     </form>
                 </div>
             </div>

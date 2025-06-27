@@ -13,16 +13,24 @@ return new class extends Migration
     {
         Schema::create('chelsi_adoption_requests', function (Blueprint $table) {
     $table->id();
+
+    // FK ke tabel hewan
     $table->unsignedBigInteger('hewan_id');
-    $table->unsignedBigInteger('adopter_id');
-    $table->text('alasan');
-    $table->text('pengalaman');
+    $table->unsignedBigInteger('adopter_id'); // FK ke user (role adopter)
+
+    // Form tambahan
+    $table->text('alasan')->nullable();
+    $table->text('pengalaman')->nullable();
+
     $table->enum('status', ['pending', 'disetujui', 'ditolak'])->default('pending');
+
     $table->timestamps();
 
+    // Relasi
     $table->foreign('hewan_id')->references('id')->on('chelsi_animals')->onDelete('cascade');
     $table->foreign('adopter_id')->references('id')->on('chelsi_users')->onDelete('cascade');
-});
+    });
+
 
     }
 
