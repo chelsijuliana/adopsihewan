@@ -47,6 +47,8 @@
                     @elseif ($role === 'dokter')
                         <li class="nav-item"><a href="/dokter/dashboard" class="nav-link">Dashboard</a></li>
                         <li class="nav-item"><a href="/dokter/pemeriksaan" class="nav-link">Pemeriksaan Hewan</a></li>
+                        <li class="nav-item"><a href="/dokter/hewan" class="nav-link">Data Hewan</a></li>
+
 
                     @elseif ($role === 'adopter')
                         <li class="nav-item"><a href="/adopter/dashboard" class="nav-link">Dashboard</a></li>

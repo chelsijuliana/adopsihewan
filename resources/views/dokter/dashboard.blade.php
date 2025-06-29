@@ -1,10 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard Dokter Hewan')
+@section('title', 'Dashboard Dokter')
 
 @section('content')
-    <div class="container">
-        <h1 class="mt-4">Dashboard Dokter Hewan</h1>
-        <p>Halo Dokter! Di sini Anda bisa melihat dan memverifikasi kondisi kesehatan hewan.</p>
-    </div>
+<div class="container">
+    <h2 class="mb-3">🩺 Dashboard Dokter Hewan</h2>
+    <p>Selamat datang, Dokter. Silakan cek dan kelola rekam medis hewan yang terdaftar di sistem.</p>
+    <a href="{{ route('dokter.hewan.index') }}" class="btn btn-primary mt-3">Lihat Daftar Hewan</a>
+</div>
 @endsection

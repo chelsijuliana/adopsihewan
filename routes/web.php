@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DokterController;
@@ -8,9 +9,20 @@ use App\Http\Controllers\PemberiController;
 use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
+    if (Auth::check()) {
+        $role = Auth::user()->role;
+
+        return match ($role) {
+            'admin' => redirect('/admin/dashboard'),
+            'dokter' => redirect('/dokter/dashboard'),
+            'adopter' => redirect('/adopter/dashboard'),
+            'pemberi' => redirect('/pemberi/dashboard'),
+            default => view('welcome'),
+        };
+    }
+
     return view('welcome');
 });
-
 
 // Admin
 Route::middleware(['auth', 'role:admin'])->group(function () {
@@ -37,11 +49,14 @@ Route::prefix('/admin/artikel')->middleware(['auth', 'role:admin'])->group(funct
 // Dokter
 Route::middleware(['auth', 'role:dokter'])->group(function () {
     Route::get('/dokter/dashboard', [DokterController::class, 'index'])->name('dokter.dashboard');
+    Route::get('/dokter/dashboard', [DokterController::class, 'index'])->name('dokter.dashboard');
+    Route::get('/dokter/hewan', [DokterController::class, 'hewanIndex'])->name('dokter.hewan.index');
+    Route::get('/dokter/hewan/{id}', [DokterController::class, 'hewanDetail'])->name('dokter.hewan.detail'); // next step
 });
 
 // Adopter
 Route::middleware(['auth', 'role:adopter'])->group(function () {
-    Route::get('/adopter/dashboard', [AdopterController::class, 'index'])->name('adopter.dashboard');
+    
 });
 
 // Adopter - Lihat hewan tersedia
