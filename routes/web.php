@@ -7,6 +7,7 @@ use App\Http\Controllers\DokterController;
 use App\Http\Controllers\AdopterController;
 use App\Http\Controllers\PemberiController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -33,6 +34,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/admin/adopsi/{id}/setujui', [AdminController::class, 'setujuiAdopsi'])->name('admin.adopsi.setujui');
     Route::post('/admin/adopsi/{id}/tolak', [AdminController::class, 'tolakAdopsi'])->name('admin.adopsi.tolak');
     Route::get('/admin/medis', [AdminController::class, 'rekamMedisIndex'])->name('admin.medis.index');
+    
 
 });
 
@@ -110,3 +112,5 @@ Route::get('/register', [AuthController::class, 'showRegisterForm'])->middleware
 Route::post('/register', [AuthController::class, 'register']);
 
 Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth');
+
+Route::get('/', [HomeController::class, 'index'])->name('home');

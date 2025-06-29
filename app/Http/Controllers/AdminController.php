@@ -8,6 +8,8 @@ use App\Models\ChelsiAdoptionRequest;
 use App\Models\ChelsiMedicalRecord;
 use App\Models\ChelsiArticle;
 
+
+
 class AdminController extends Controller
 {
     public function index()
@@ -111,6 +113,8 @@ class AdminController extends Controller
 
         return back()->with('success', 'Artikel berhasil dihapus.');
     }
+      
+
 
 
 
