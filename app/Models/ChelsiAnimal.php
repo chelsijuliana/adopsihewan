@@ -44,4 +44,10 @@ class ChelsiAnimal extends Model
     {
         return $this->hasMany(ChelsiAdoptionGallery::class, 'hewan_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(ChelsiUser::class, 'user_id');
+    }
+
 }
