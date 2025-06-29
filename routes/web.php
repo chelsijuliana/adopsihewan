@@ -52,6 +52,8 @@ Route::middleware(['auth', 'role:dokter'])->group(function () {
     Route::get('/dokter/dashboard', [DokterController::class, 'index'])->name('dokter.dashboard');
     Route::get('/dokter/hewan', [DokterController::class, 'hewanIndex'])->name('dokter.hewan.index');
     Route::get('/dokter/hewan/{id}', [DokterController::class, 'hewanDetail'])->name('dokter.hewan.detail'); // next step
+    Route::post('/dokter/hewan/{id}/rekam-medis', [DokterController::class, 'tambahRekamMedis'])->name('dokter.rekam-medis.store');
+
 });
 
 // Adopter
