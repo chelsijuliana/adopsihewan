@@ -1,46 +1,38 @@
 @extends('layouts.app')
 
-@section('title', 'Rekam Medis ' . $hewan->nama)
+@section('title', 'Tambah Rekam Medis')
 
 @section('content')
 <div class="container">
-    <h2 class="mb-3">🩺 Rekam Medis - {{ $hewan->nama }}</h2>
+    <h2>🩺 Tambah Rekam Medis</h2>
 
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
-    <div class="mb-4">
-        <form action="{{ route('dokter.rekam-medis.store', $hewan->id) }}" method="POST">
-            @csrf
-            <div class="mb-3">
-                <label>Diagnosa</label>
-                <input type="text" name="diagnosa" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label>Tindakan</label>
-                <input type="text" name="tindakan" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label>Catatan Tambahan</label>
-                <textarea name="catatan" class="form-control"></textarea>
-            </div>
-            <button class="btn btn-primary">Simpan Rekam Medis</button>
-        </form>
-    </div>
-
-    <hr>
-
-    <h4 class="mt-4">📋 Riwayat Rekam Medis</h4>
-    @forelse ($rekamMedis as $rekam)
-        <div class="border p-3 mb-3 rounded shadow-sm">
-            <p><strong>Tanggal:</strong> {{ $rekam->created_at->format('d M Y') }}</p>
-            <p><strong>Diagnosa:</strong> {{ $rekam->diagnosa }}</p>
-            <p><strong>Tindakan:</strong> {{ $rekam->tindakan }}</p>
-            <p><strong>Catatan:</strong> {{ $rekam->catatan ?: '-' }}</p>
+    <form action="{{ route('dokter.rekam-medis.tambah', $hewan->id) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="mb-3">
+            <label>Tanggal</label>
+            <input type="date" name="tanggal" class="form-control" required>
         </div>
-    @empty
-        <p class="text-muted">Belum ada rekam medis.</p>
-    @endforelse
+        <div class="mb-3">
+            <label>Diagnosa / Kondisi</label>
+            <textarea name="kondisi" class="form-control" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label>Vaksinasi</label>
+            <textarea name="vaksinasi" class="form-control"></textarea>
+        </div>
+        <div class="mb-3">
+            <label>Upload File Hasil Pemeriksaan</label>
+            <input type="file" name="file_hasil" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label>Layak Adopsi?</label>
+            <select name="layak_adopsi" class="form-control" required>
+                <option value="1">Ya</option>
+                <option value="0">Tidak</option>
+            </select>
+        </div>
+        <button class="btn btn-success">Simpan Rekam Medis</button>
+        <a href="{{ route('dokter.hewan.detail', $hewan->id) }}" class="btn btn-secondary">Batal</a>
+    </form>
 </div>
 @endsection

@@ -46,15 +46,30 @@ Route::prefix('/admin/artikel')->middleware(['auth', 'role:admin'])->group(funct
 });
 
 
-// Dokter
+// =====================
+// 🧑‍⚕️ ROUTE DOKTER
+// =====================
 Route::middleware(['auth', 'role:dokter'])->group(function () {
+    // Dashboard
     Route::get('/dokter/dashboard', [DokterController::class, 'index'])->name('dokter.dashboard');
-    Route::get('/dokter/dashboard', [DokterController::class, 'index'])->name('dokter.dashboard');
-    Route::get('/dokter/hewan', [DokterController::class, 'hewanIndex'])->name('dokter.hewan.index');
-    Route::get('/dokter/hewan/{id}', [DokterController::class, 'hewanDetail'])->name('dokter.hewan.detail'); // next step
-    Route::post('/dokter/hewan/{id}/rekam-medis', [DokterController::class, 'tambahRekamMedis'])->name('dokter.rekam-medis.store');
 
+    // Lihat daftar hewan dan detailnya
+    Route::get('/dokter/hewan', [DokterController::class, 'hewanIndex'])->name('dokter.hewan.index');
+    Route::get('/dokter/hewan/{id}', [DokterController::class, 'hewanDetail'])->name('dokter.hewan.detail');
+
+    // Tambah rekam medis (GET dan POST)
+    Route::get('/dokter/hewan/{id}/rekam-medis/tambah', function ($id) {
+        $hewan = App\Models\ChelsiAnimal::findOrFail($id);
+        return view('dokter.rekam.tambah', compact('hewan'));
+    })->name('dokter.rekam-medis.tambah');
+    
+    Route::post('/dokter/hewan/{id}/rekam-medis/tambah', [DokterController::class, 'tambahRekamMedis'])->name('dokter.rekam-medis.store');
+
+    // Edit rekam medis
+    Route::get('/dokter/rekam-medis/{id}/edit', [DokterController::class, 'editRekamMedis'])->name('dokter.rekam-medis.edit');
+    Route::put('/dokter/rekam-medis/{id}', [DokterController::class, 'updateRekamMedis'])->name('dokter.rekam-medis.update');
 });
+
 
 // Adopter
 Route::middleware(['auth', 'role:adopter'])->group(function () {
