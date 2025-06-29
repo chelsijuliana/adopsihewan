@@ -41,9 +41,8 @@
                         <li class="nav-item"><a href="/admin/hewan" class="nav-link">Data Hewan</a></li>
                         <li class="nav-item"><a href="/admin/adopsi" class="nav-link">Permintaan Adopsi</a></li>
                         <li class="nav-item"><a href="/admin/medis" class="nav-link">Rekam Medis</a></li>
+                        <li class="nav-item"><a href="/admin/artikel" class="nav-link">Kelola Artikel</a></li>
 
-
-                
 
                     @elseif ($role === 'dokter')
                         <li class="nav-item"><a href="/dokter/dashboard" class="nav-link">Dashboard</a></li>

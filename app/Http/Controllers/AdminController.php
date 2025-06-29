@@ -6,6 +6,7 @@ use App\Models\ChelsiUser;
 use App\Models\ChelsiAnimal;
 use App\Models\ChelsiAdoptionRequest;
 use App\Models\ChelsiMedicalRecord;
+use App\Models\ChelsiArticle;
 
 class AdminController extends Controller
 {
@@ -54,6 +55,63 @@ class AdminController extends Controller
         $rekam = ChelsiMedicalRecord::with(['hewan', 'dokter'])->latest()->get();
         return view('admin.medis.index', compact('rekam'));
     }
+
+    public function artikelIndex()
+    {
+        $artikel = ChelsiArticle::latest()->get();
+        return view('admin.artikel.index', compact('artikel'));
+    }
+
+    public function artikelCreate()
+    {
+        return view('admin.artikel.create');
+    }
+
+    public function artikelStore(Request $request)
+    {
+        $request->validate([
+            'judul' => 'required|string|max:200',
+            'isi' => 'required|string',
+        ]);
+
+        ChelsiArticle::create([
+            'judul' => $request->judul,
+            'isi' => $request->isi,
+        ]);
+
+        return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil ditambahkan.');
+    }
+
+    public function artikelEdit($id)
+    {
+        $artikel = ChelsiArticle::findOrFail($id);
+        return view('admin.artikel.edit', compact('artikel'));
+    }
+
+    public function artikelUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'judul' => 'required|string|max:200',
+            'isi' => 'required|string',
+        ]);
+
+        $artikel = ChelsiArticle::findOrFail($id);
+        $artikel->update([
+            'judul' => $request->judul,
+            'isi' => $request->isi,
+        ]);
+
+        return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil diperbarui.');
+    }
+
+    public function artikelDestroy($id)
+    {
+        $artikel = ChelsiArticle::findOrFail($id);
+        $artikel->delete();
+
+        return back()->with('success', 'Artikel berhasil dihapus.');
+    }
+
 
 
     
