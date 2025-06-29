@@ -17,6 +17,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
     Route::get('/admin/hewan', [AdminController::class, 'hewanIndex'])->name('admin.hewan.index');
+    Route::get('/admin/adopsi', [AdminController::class, 'adopsiIndex'])->name('admin.adopsi.index');
+    Route::post('/admin/adopsi/{id}/setujui', [AdminController::class, 'setujuiAdopsi'])->name('admin.adopsi.setujui');
+    Route::post('/admin/adopsi/{id}/tolak', [AdminController::class, 'tolakAdopsi'])->name('admin.adopsi.tolak');
+
 
 
 });

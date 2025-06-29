@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ChelsiUser;
 use App\Models\ChelsiAnimal;
+use App\Models\ChelsiAdoptionRequest;
 
 class AdminController extends Controller
 {
@@ -23,7 +24,31 @@ class AdminController extends Controller
         $hewan = ChelsiAnimal::with('user')->latest()->get();
         return view('admin.hewan.index', compact('hewan'));
     }
-    
+
+    public function adopsiIndex()
+    {
+        $permintaan = ChelsiAdoptionRequest::with(['hewan', 'adopter'])->latest()->get();
+        return view('admin.adopsi.index', compact('permintaan'));
+    }
+
+    public function setujuiAdopsi($id)
+    {
+        $adopsi = ChelsiAdoptionRequest::findOrFail($id);
+        $adopsi->status = 'disetujui';
+        $adopsi->save();
+
+        return back()->with('success', 'Permintaan adopsi disetujui.');
+    }
+
+    public function tolakAdopsi($id)
+    {
+        $adopsi = ChelsiAdoptionRequest::findOrFail($id);
+        $adopsi->status = 'ditolak';
+        $adopsi->save();
+
+        return back()->with('success', 'Permintaan adopsi ditolak.');
+    }
+
 
     
 }
