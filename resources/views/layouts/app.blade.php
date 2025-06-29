@@ -40,6 +40,7 @@
                         <li class="nav-item"><a href="/admin/laporan" class="nav-link">Laporan</a></li>
                         <li class="nav-item"><a href="/admin/hewan" class="nav-link">Data Hewan</a></li>
                         <li class="nav-item"><a href="/admin/adopsi" class="nav-link">Permintaan Adopsi</a></li>
+                        <li class="nav-item"><a href="/admin/medis" class="nav-link">Rekam Medis</a></li>
 
 
                 

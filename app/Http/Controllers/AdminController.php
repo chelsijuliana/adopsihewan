@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Models\ChelsiUser;
 use App\Models\ChelsiAnimal;
 use App\Models\ChelsiAdoptionRequest;
+use App\Models\ChelsiMedicalRecord;
 
 class AdminController extends Controller
 {
@@ -47,6 +48,11 @@ class AdminController extends Controller
         $adopsi->save();
 
         return back()->with('success', 'Permintaan adopsi ditolak.');
+    }
+    public function rekamMedisIndex()
+    {
+        $rekam = ChelsiMedicalRecord::with(['hewan', 'dokter'])->latest()->get();
+        return view('admin.medis.index', compact('rekam'));
     }
 
 

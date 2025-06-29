@@ -20,10 +20,14 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/adopsi', [AdminController::class, 'adopsiIndex'])->name('admin.adopsi.index');
     Route::post('/admin/adopsi/{id}/setujui', [AdminController::class, 'setujuiAdopsi'])->name('admin.adopsi.setujui');
     Route::post('/admin/adopsi/{id}/tolak', [AdminController::class, 'tolakAdopsi'])->name('admin.adopsi.tolak');
+    Route::get('/admin/medis', [AdminController::class, 'rekamMedisIndex'])->name('admin.medis.index');
+
 
 
 
 });
+
+
 
 
 // Dokter

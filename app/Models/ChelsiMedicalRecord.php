@@ -23,4 +23,6 @@ class ChelsiMedicalRecord extends Model
     {
         return $this->belongsTo(ChelsiUser::class, 'dokter_id');
     }
+
+    
 }
