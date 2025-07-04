@@ -36,18 +36,26 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::post('/admin/adopsi/{id}/setujui', [AdminController::class, 'setujuiAdopsi'])->name('admin.adopsi.setujui');
     Route::post('/admin/adopsi/{id}/tolak', [AdminController::class, 'tolakAdopsi'])->name('admin.adopsi.tolak');
     Route::get('/admin/medis', [AdminController::class, 'rekamMedisIndex'])->name('admin.medis.index');
+    Route::get('/admin/artikel', [AdminController::class, 'artikelIndex'])->name('admin.artikel.index');
+    Route::get('/admin/artikel/tambah', [AdminController::class, 'artikelCreate'])->name('admin.artikel.create');
+    Route::post('/admin/artikel', [AdminController::class, 'artikelStore'])->name('admin.artikel.store');
+    Route::get('/admin/artikel/edit/{id}', [AdminController::class, 'artikelEdit'])->name('admin.artikel.edit');
+    Route::put('/admin/artikel/update/{id}', [AdminController::class, 'artikelUpdate'])->name('admin.artikel.update');
+    Route::delete('/admin/artikel/delete/{id}', [AdminController::class, 'hapusArtikel'])->name('admin.artikel.delete');
+
+
     
 
 });
 
-Route::prefix('/admin/artikel')->middleware(['auth', 'role:admin'])->group(function () {
+/*Route::prefix('/admin/artikel')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/', [AdminController::class, 'artikelIndex'])->name('admin.artikel.index');
     Route::get('/tambah', [AdminController::class, 'artikelCreate'])->name('admin.artikel.create');
     Route::post('/tambah', [AdminController::class, 'artikelStore'])->name('admin.artikel.store');
     Route::get('/edit/{id}', [AdminController::class, 'artikelEdit'])->name('admin.artikel.edit');
     Route::put('/update/{id}', [AdminController::class, 'artikelUpdate'])->name('admin.artikel.update');
     Route::delete('/hapus/{id}', [AdminController::class, 'artikelDestroy'])->name('admin.artikel.destroy');
-});
+});*/
 
 
 // =====================

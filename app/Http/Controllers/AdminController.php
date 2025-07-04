@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\ChelsiUser;
 use App\Models\ChelsiAnimal;
 use App\Models\ChelsiAdoptionRequest;
 use App\Models\ChelsiMedicalRecord;
 use App\Models\ChelsiArticle;
+use Illuminate\Support\Facades\Storage;
 
 
 
@@ -72,13 +74,19 @@ class AdminController extends Controller
     public function artikelStore(Request $request)
     {
         $request->validate([
-            'judul' => 'required|string|max:200',
-            'isi' => 'required|string',
+            'judul' => 'required|string|max:255',
+            'konten' => 'required|string',
+            'foto' => 'nullable|image|max:2048'
         ]);
+
+        $foto = $request->file('foto') ? $request->file('foto')->store('artikel', 'public') : null;
 
         ChelsiArticle::create([
             'judul' => $request->judul,
-            'isi' => $request->isi,
+            'konten' => $request->konten,
+            'foto' => $foto,
+            'created_by' => Auth::id(),
+
         ]);
 
         return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil ditambahkan.');
@@ -92,27 +100,51 @@ class AdminController extends Controller
 
     public function artikelUpdate(Request $request, $id)
     {
+        $artikel = ChelsiArticle::findOrFail($id);
+
         $request->validate([
-            'judul' => 'required|string|max:200',
-            'isi' => 'required|string',
+            'judul' => 'required|string|max:255',
+            'konten' => 'required|string',
+            'foto' => 'nullable|image|max:2048'
         ]);
 
-        $artikel = ChelsiArticle::findOrFail($id);
+        if ($request->hasFile('foto')) {
+            // Hapus foto lama jika ada
+            if ($artikel->foto) {
+                Storage::disk('public')->delete($artikel->foto);
+            }
+
+            $fotoBaru = $request->file('foto')->store('artikel', 'public');
+            $artikel->foto = $fotoBaru;
+        }
+
         $artikel->update([
             'judul' => $request->judul,
-            'isi' => $request->isi,
+            'konten' => $request->konten,
+            'foto' => $artikel->foto,
         ]);
 
         return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil diperbarui.');
     }
 
-    public function artikelDestroy($id)
+    public function hapusArtikel($id)
     {
         $artikel = ChelsiArticle::findOrFail($id);
+
+        // Hapus file foto jika ada
+        if ($artikel->foto) {
+            try {
+                Storage::disk('public')->delete($artikel->foto);
+            } catch (\Exception $e) {
+                // Abaikan jika file tidak ditemukan
+            }
+        }
+
         $artikel->delete();
 
-        return back()->with('success', 'Artikel berhasil dihapus.');
+        return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil dihapus.');
     }
+    
       
 
 

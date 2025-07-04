@@ -14,7 +14,8 @@
     @forelse ($hewan as $h)
         <div class="col-md-4 mb-4">
             <div class="card shadow-sm">
-                <img src="{{ asset('storage/' . $h->foto) }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                <img src="{{ asset('storage/' . $h->foto) }}" class="img-fluid" style="height: 250px; width: 100%; object-fit: cover;">
+
                 <div class="card-body">
                     <h5 class="card-title">{{ $h->nama }}</h5>
                     <p class="card-text">{{ $h->jenis }} - {{ ucfirst($h->jenis_kelamin) }}</p>

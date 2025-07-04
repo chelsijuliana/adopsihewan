@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container">
-    <h2>📚 Daftar Artikel Edukasi</h2>
+    <h2>📰 Daftar Artikel</h2>
 
     @if (session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -15,26 +15,30 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>#</th>
                 <th>Judul</th>
-                <th>Dibuat</th>
+                <th>Penulis</th>
+                <th>Waktu</th>
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($artikel as $i => $a)
-            <tr>
-                <td>{{ $i + 1 }}</td>
-                <td>{{ $a->judul }}</td>
-                <td>{{ $a->created_at->format('d M Y') }}</td>
-                <td>
-                    <a href="{{ route('admin.artikel.edit', $a->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                    <form action="{{ route('admin.artikel.destroy', $a->id) }}" method="POST" style="display:inline;">
-                        @csrf @method('DELETE')
-                        <button class="btn btn-danger btn-sm" onclick="return confirm('Hapus artikel ini?')">Hapus</button>
-                    </form>
-                </td>
-            </tr>
+            @foreach ($artikel as $a)
+                <tr>
+                    <td>{{ $a->judul }}</td>
+                    <td>{{ $a->penulis->nama ?? '-' }}</td>
+                    <td>{{ $a->created_at->format('d M Y') }}</td>
+                    <td>
+                        <a href="#" class="btn btn-info btn-sm">Lihat</a>
+                        <a href="{{ route('admin.artikel.edit', $a->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <form action="{{ route('admin.artikel.delete', $a->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus artikel ini?')" style="display:inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-sm btn-danger">Hapus</button>
+                        </form>
+
+                        {{-- Bisa tambah edit & delete jika ingin --}}
+                    </td>
+                </tr>
             @endforeach
         </tbody>
     </table>
