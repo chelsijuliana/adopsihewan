@@ -30,6 +30,8 @@
                     <li class="nav-item"><a href="/" class="nav-link">Beranda</a></li>
                     <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
                     <li class="nav-item"><a href="/register" class="nav-link">Daftar</a></li>
+                    <li class="nav-item"><a href="{{ route('artikel.index') }}" class="nav-link">Artikel</a></li>
+
                     
                 @endguest
 

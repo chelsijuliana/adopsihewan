@@ -9,6 +9,7 @@ use App\Http\Controllers\PemberiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GaleriController;
+use App\Http\Controllers\PublicController;
 
 
 Route::get('/', function () {
@@ -126,4 +127,8 @@ Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth');
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/galeri-adopsi', [GaleriController::class, 'index'])->name('galeri.adopsi');
+
+// Halaman Publik - Artikel
+Route::get('/artikel', [PublicController::class, 'listArtikel'])->name('artikel.index');
+Route::get('/artikel/{id}', [PublicController::class, 'detailArtikel'])->name('artikel.show');
 
