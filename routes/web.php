@@ -8,6 +8,8 @@ use App\Http\Controllers\AdopterController;
 use App\Http\Controllers\PemberiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\GaleriController;
+
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -114,3 +116,6 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth');
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/galeri-adopsi', [GaleriController::class, 'index'])->name('galeri.adopsi');
+
