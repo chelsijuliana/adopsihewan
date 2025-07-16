@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use App\Models\ChelsiUser;
 
 class AuthController extends Controller
@@ -43,17 +44,35 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:100',
-            'email' => 'required|email|unique:chelsi_users,email',
+            'name'     => 'required|string|max:100',
+            'email'    => 'required|email|unique:chelsi_users,email',
             'password' => 'required|string|min:6|confirmed',
-            'role' => 'required|in:admin,dokter,adopter,pemberi',
+            'role'     => 'required|in:admin,dokter,adopter,pemberi',
+            'phone'    => 'nullable|string|max:20',
+            'address'  => 'nullable|string|max:255',
+            'photo'    => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
+        $photoPath = null;
+
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->store('photos', 'public');
+        }
+
         ChelsiUser::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role
+            'name'     => $request->name,
+    /**
+     * Handle an incoming authentication logout request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+            'email'    => $request->email,
+            'password' => Hash::make($request->password),// atau pakai Hash::make(...) jika mau aman
+            'role'     => $request->role,
+            'phone'    => $request->phone,
+            'address'  => $request->address,
+            'photo'    => $photoPath
         ]);
 
         return redirect('/login')->with('success', 'Akun berhasil dibuat. Silakan login.');

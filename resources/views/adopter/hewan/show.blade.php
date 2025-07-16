@@ -3,45 +3,81 @@
 @section('title', 'Detail Hewan')
 
 @section('content')
-<div class="container">
-    <a href="{{ route('adopter.hewan.index') }}" class="btn btn-secondary mb-3">← Kembali ke daftar</a>
+<div class="container mt-4">
+    <h2 class="mb-4">🐾 Detail Hewan</h2>
 
-    <div class="card shadow">
-        <div class="row g-0">
-            <div class="col-md-5">
-                <img src="{{ asset('storage/' . $hewan->foto) }}" class="img-fluid rounded-start" style="height: 100%; object-fit: cover;">
-            </div>
-            <div class="col-md-7">
+    <div class="row g-4">
+        <div class="col-md-5">
+            <img src="{{ asset('storage/' . $hewan->foto) }}" class="img-fluid rounded shadow" alt="Foto Hewan">
+        </div>
+
+        <div class="col-md-7">
+            <div class="card shadow-sm">
                 <div class="card-body">
-                    <h3 class="card-title">{{ $hewan->nama }} ({{ ucfirst($hewan->jenis_kelamin) }})</h3>
-                    <p><strong>Jenis:</strong> {{ $hewan->jenis }}</p>
-                    <p><strong>Ras:</strong> {{ $hewan->ras ?? '-' }}</p>
-                    <p><strong>Usia:</strong> {{ $hewan->usia }} tahun</p>
-                    <p><strong>Deskripsi:</strong><br> {{ $hewan->deskripsi ?? 'Tidak ada deskripsi.' }}</p>
+                    <table class="table table-borderless">
+                        <tr>
+                            <th class="text-start"><i class="bi bi-paw"></i> Nama</th>
+                            <td class="text-start fw-bold">{{ $hewan->nama }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-start"><i class="bi bi-tags"></i> Jenis</th>
+                            <td class="text-start">{{ $hewan->jenis }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-start"><i class="bi bi-shield"></i> Ras</th>
+                            <td class="text-start">{{ $hewan->ras ?? '-' }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-start"><i class="bi bi-calendar-heart"></i> Usia</th>
+                            <td class="text-start">
+                                @php
+                                    $usiaTahun = floor($hewan->usia / 12);
+                                    $usiaBulan = $hewan->usia % 12;
+                                @endphp
+                                @if ($usiaTahun > 0)
+                                    {{ $usiaTahun }} tahun
+                                @endif
+                                @if ($usiaBulan > 0)
+                                    {{ $usiaBulan }} bulan
+                                @endif
+                                @if ($usiaTahun == 0 && $usiaBulan == 0)
+                                    0 bulan
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-start"><i class="bi bi-gender-ambiguous"></i> Jenis Kelamin</th>
+                            <td class="text-start">{{ ucfirst($hewan->jenis_kelamin) }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-start"><i class="bi bi-chat-text"></i> Deskripsi</th>
+                            <td class="text-start">{{ $hewan->deskripsi ?? '-' }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-start"><i class="bi bi-check-circle"></i> Status</th>
+                            <td class="text-start">
+                                <span class="badge bg-{{ 
+                                    $hewan->status == 'menunggu' ? 'warning text-dark' :
+                                    ($hewan->status == 'diverifikasi' ? 'primary' :
+                                    ($hewan->status == 'siap' ? 'success' : 'danger')) }}">
+                                    {{ ucfirst($hewan->status) }}
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-start"><i class="bi bi-person-heart"></i> Pemberi Hibah</th>
+                            <td class="text-start">{{ $hewan->pemberi->name ?? '-' }}</td>
+                        </tr>
+                    </table>
 
-                    <hr>
-
-                    {{-- Pesan sukses/gagal --}}
-                    @if (session('success'))
-                        <div class="alert alert-success">{{ session('success') }}</div>
-                    @endif
-                    @if (session('error'))
-                        <div class="alert alert-danger">{{ session('error') }}</div>
-                    @endif
-
-                    {{-- Form ajukan adopsi --}}
-                    <form action="{{ route('adopter.adopsi', $hewan->id) }}" method="POST">
-                        @csrf
-                        <div class="mb-3">
-                            <label>📝 Alasan ingin mengadopsi <span class="text-danger">*</span></label>
-                            <textarea name="alasan" class="form-control" rows="3" required>{{ old('alasan') }}</textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label>💡 Pengalaman merawat hewan (opsional)</label>
-                            <textarea name="pengalaman" class="form-control" rows="3">{{ old('pengalaman') }}</textarea>
-                        </div>
-                        <button class="btn btn-success">❤️ Ajukan Adopsi</button>
-                    </form>
+                    <div class="mt-3 d-flex gap-2">
+                        <a href="{{ route('adopter.hewan.index') }}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Kembali
+                        </a>
+                        <a href="{{ route('adopter.rekam-medis.lihat', $hewan->id) }}" class="btn btn-outline-primary">
+                            <i class="bi bi-journal-medical"></i> Lihat Rekam Medis
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

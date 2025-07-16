@@ -17,6 +17,7 @@ class ChelsiArticle extends Model
     {
         return $this->belongsTo(ChelsiUser::class, 'created_by');
     }
+    
 
     // Jika kamu tambahkan category_id di artikel, tambahkan relasi ini:
     /*

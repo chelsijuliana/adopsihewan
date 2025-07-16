@@ -1,16 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\ChelsiUser;
 use App\Models\ChelsiAnimal;
 use App\Models\ChelsiAdoptionRequest;
 use App\Models\ChelsiMedicalRecord;
 use App\Models\ChelsiArticle;
-use Illuminate\Support\Facades\Storage;
-
-
 
 class AdminController extends Controller
 {
@@ -21,13 +20,71 @@ class AdminController extends Controller
 
     public function users()
     {
-        $users = ChelsiUser::where('role', '!=', 'admin')->get(); // Semua kecuali admin
-        return view('admin.users', compact('users'));
+        $pengguna = ChelsiUser::where('role', '!=', 'admin')->get();
+        return view('admin.pengguna.index', compact('pengguna'));
+    }
+
+    public function penggunaIndex()
+    {
+        $pengguna = ChelsiUser::where('role', '!=', 'admin')->get();
+
+        return view('admin.pengguna.index', compact('pengguna'));
+    }
+
+    public function editUser($id)
+    {
+        $user = ChelsiUser::findOrFail($id);
+        return view('admin.edit', compact('user'));
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $user = ChelsiUser::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'role' => 'required',
+            'phone' => 'nullable|string',
+            'address' => 'nullable|string',
+            'photo' => 'nullable|image|max:2048',
+            'password' => 'nullable|string'
+        ]);
+
+        $data = $request->only(['name', 'email', 'role', 'phone', 'address']);
+
+        if ($request->hasFile('photo')) {
+            if ($user->photo) {
+                Storage::disk('public')->delete($user->photo);
+            }
+            $data['photo'] = $request->file('photo')->store('user_photos', 'public');
+        }
+
+        if ($request->password) {
+            $data['password'] = $request->password; // tanpa Hash sesuai permintaan
+        }
+
+        $user->update($data);
+
+        return redirect()->route('admin.pengguna.index')->with('success', 'Data pengguna berhasil diperbarui.');
+    }
+
+    public function deleteUser($id)
+    {
+        $user = ChelsiUser::findOrFail($id);
+
+        if ($user->photo) {
+            Storage::disk('public')->delete($user->photo);
+        }
+
+        $user->delete();
+
+        return back()->with('success', 'Pengguna berhasil dihapus.');
     }
 
     public function hewanIndex()
     {
-        $hewan = ChelsiAnimal::with('user')->latest()->get();
+        $hewan = ChelsiAnimal::with(['pemberi', 'dokter', 'adoptionRequests'])->get();
         return view('admin.hewan.index', compact('hewan'));
     }
 
@@ -54,6 +111,7 @@ class AdminController extends Controller
 
         return back()->with('success', 'Permintaan adopsi ditolak.');
     }
+
     public function rekamMedisIndex()
     {
         $rekam = ChelsiMedicalRecord::with(['hewan', 'dokter'])->latest()->get();
@@ -86,7 +144,6 @@ class AdminController extends Controller
             'konten' => $request->konten,
             'foto' => $foto,
             'created_by' => Auth::id(),
-
         ]);
 
         return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil ditambahkan.');
@@ -109,13 +166,10 @@ class AdminController extends Controller
         ]);
 
         if ($request->hasFile('foto')) {
-            // Hapus foto lama jika ada
             if ($artikel->foto) {
                 Storage::disk('public')->delete($artikel->foto);
             }
-
-            $fotoBaru = $request->file('foto')->store('artikel', 'public');
-            $artikel->foto = $fotoBaru;
+            $artikel->foto = $request->file('foto')->store('artikel', 'public');
         }
 
         $artikel->update([
@@ -131,24 +185,14 @@ class AdminController extends Controller
     {
         $artikel = ChelsiArticle::findOrFail($id);
 
-        // Hapus file foto jika ada
         if ($artikel->foto) {
             try {
                 Storage::disk('public')->delete($artikel->foto);
-            } catch (\Exception $e) {
-                // Abaikan jika file tidak ditemukan
-            }
+            } catch (\Exception $e) {}
         }
 
         $artikel->delete();
 
         return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil dihapus.');
     }
-    
-      
-
-
-
-
-    
 }

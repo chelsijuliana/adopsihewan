@@ -43,9 +43,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin/artikel/edit/{id}', [AdminController::class, 'artikelEdit'])->name('admin.artikel.edit');
     Route::put('/admin/artikel/update/{id}', [AdminController::class, 'artikelUpdate'])->name('admin.artikel.update');
     Route::delete('/admin/artikel/delete/{id}', [AdminController::class, 'hapusArtikel'])->name('admin.artikel.delete');
-
-
-    
+    Route::get('/admin/pengguna', [AdminController::class, 'penggunaIndex'])->name('admin.pengguna.index');
+    Route::get('/admin/hewan', [AdminController::class, 'hewanIndex'])->name('admin.hewan.index');
+    //kelola pengguna
+    Route::get('/admin/pengguna/edit/{id}', [AdminController::class, 'editUser'])->name('admin.pengguna.edit');
+    Route::delete('/admin/pengguna/delete/{id}', [AdminController::class, 'deleteUser'])->name('admin.pengguna.delete');
+    Route::put('/admin/pengguna/update/{id}', [AdminController::class, 'updateUser'])->name('admin.pengguna.update');
 
 });
 
@@ -68,6 +71,7 @@ Route::middleware(['auth', 'role:dokter'])->group(function () {
 
     // Lihat daftar hewan dan detailnya
     Route::get('/dokter/hewan', [DokterController::class, 'hewanIndex'])->name('dokter.hewan.index');
+    
     Route::get('/dokter/hewan/{id}', [DokterController::class, 'hewanDetail'])->name('dokter.hewan.detail');
 
     // Tambah rekam medis (GET dan POST)
@@ -81,7 +85,17 @@ Route::middleware(['auth', 'role:dokter'])->group(function () {
     // Edit rekam medis
     Route::get('/dokter/rekam-medis/{id}/edit', [DokterController::class, 'editRekamMedis'])->name('dokter.rekam-medis.edit');
     Route::put('/dokter/rekam-medis/{id}', [DokterController::class, 'updateRekamMedis'])->name('dokter.rekam-medis.update');
+
+    // Ubah status hewan
+    Route::put('/dokter/hewan/{id}/ubah-status', [DokterController::class, 'ubahStatus'])->name('dokter.hewan.ubah-status');
+
+    // Rekap Pemeriksaan
+    Route::get('/dokter/pemeriksaan', [DokterController::class, 'rekapIndex'])->name('dokter.rekam.index');
+    Route::get('/dokter/pemeriksaan/{id}', [DokterController::class, 'rekapDetail'])->name('dokter.rekam.detail');
+
+
 });
+
 
 
 // Adopter
@@ -91,10 +105,20 @@ Route::middleware(['auth', 'role:adopter'])->group(function () {
 
 // Adopter - Lihat hewan tersedia
 Route::middleware(['auth', 'role:adopter'])->group(function () {
+    Route::get('/adopter/dashboard', [AdopterController::class, 'index'])->name('adopter.dashboard');
     Route::get('/adopter/hewan', [AdopterController::class, 'hewanIndex'])->name('adopter.hewan.index');
     Route::get('/adopter/hewan/{id}', [AdopterController::class, 'show'])->name('adopter.hewan.show');
     Route::post('/adopter/adopsi/{id}', [AdopterController::class, 'ajukanAdopsi'])->name('adopter.adopsi');
     Route::get('/adopter/status-adopsi', [AdopterController::class, 'statusAdopsi'])->name('adopter.status');
+    Route::get('/adopter/hewan/{id}/rekam-medis', [AdopterController::class, 'rekamMedis'])->name('adopter.rekam-medis.lihat');
+    Route::get('/adopter/hewan/{id}', [AdopterController::class, 'show'])->name('adopter.hewan.show');
+    Route::get('/adopter/adopsi/{id}/form', [AdopterController::class, 'formAjukanAdopsi'])->name('adopter.adopsi.form');
+    Route::delete('/adopter/adopsi/batalkan/{id}', [AdopterController::class, 'batalkanAdopsi'])->name('adopter.adopsi.batalkan');
+
+    
+
+
+
 
 });
 
@@ -112,6 +136,16 @@ Route::middleware(['auth', 'role:pemberi'])->group(function () {
     Route::get('/pemberi/hewan/edit/{id}', [PemberiController::class, 'edit'])->name('pemberi.hewan.edit');
     Route::put('/pemberi/hewan/update/{id}', [PemberiController::class, 'update'])->name('pemberi.hewan.update');
     Route::delete('/pemberi/hewan/delete/{id}', [PemberiController::class, 'destroy'])->name('pemberi.hewan.destroy');
+
+    Route::get('/pemberi/hewan/detail/{id}', [PemberiController::class, 'detailHewan'])->name('pemberi.hewan.detail');
+
+    Route::get('/pemberi/pengajuan-adopsi', [PemberiController::class, 'pengajuanAdopsiIndex'])->name('pemberi.adopsi.index');
+    Route::post('/pemberi/pengajuan-adopsi/{id}/setujui', [PemberiController::class, 'setujuiAdopsi'])->name('pemberi.adopsi.setujui');
+    Route::post('/pemberi/pengajuan-adopsi/{id}/tolak', [PemberiController::class, 'tolakAdopsi'])->name('pemberi.adopsi.tolak');
+
+    
+
+
 });
 
 
@@ -126,7 +160,9 @@ Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth');
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/galeri-adopsi', [GaleriController::class, 'index'])->name('galeri.adopsi');
+//Route::get('/galeri-adopsi', [GaleriController::class, 'index'])->name('galeri.adopsi');
+Route::get('/galeri-adopsi', [GaleriController::class, 'index']);
+
 
 // Halaman Publik - Artikel
 Route::get('/artikel', [PublicController::class, 'listArtikel'])->name('artikel.index');

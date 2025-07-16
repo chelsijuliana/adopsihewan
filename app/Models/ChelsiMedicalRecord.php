@@ -13,6 +13,11 @@ class ChelsiMedicalRecord extends Model
         'hewan_id', 'dokter_id', 'tanggal', 'kondisi',
         'vaksinasi', 'file_hasil', 'layak_adopsi'
     ];
+    
+
+     protected $casts = [
+        'layak_adopsi' => 'boolean',
+    ];
 
     public function hewan(): BelongsTo
     {
@@ -23,6 +28,9 @@ class ChelsiMedicalRecord extends Model
     {
         return $this->belongsTo(ChelsiUser::class, 'dokter_id');
     }
+
+    
+    
 
     
 }

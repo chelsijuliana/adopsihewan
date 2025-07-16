@@ -22,4 +22,5 @@ class ChelsiAdoptionGallery extends Model
     {
         return $this->belongsTo(ChelsiUser::class, 'adopter_id');
     }
+    
 }
